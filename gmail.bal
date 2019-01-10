@@ -1,7 +1,6 @@
 import ballerina/io;
 import wso2/gmail;
 import ballerina/http;
-import ballerina/config;
 import ballerina/test;
 import ballerina/log;
 import ballerina/mysql;
@@ -10,10 +9,10 @@ gmail:GmailConfiguration gmailConfig = {
     clientConfig: {
         auth: {
             scheme: http:OAUTH2,
-            accessToken: "ya29.GluNBl27_C9j-nHhMvZwNDkytuiBpuCl95seVEUrF-ymfS-b1eONJNeYTgjYeC8NKAzerPH5478dB2RQB_MuQ-7s7cyi5gfAh8i2cFXuDqzzhX0UC2YOn3M3D0qt",
-            clientId: "167394581702-ekp2nkd8t6amlo1gc80nlnuoc4k16h6m.apps.googleusercontent.com",
-            clientSecret: "lPJzp1zkMfclThpa5sDQ9AKVt",
-            refreshToken: "1/skht16-5503-G2BxzItv_OQQgDcMk4xNJQGDEAyfcro"
+            accessToken: access_token,
+            clientId: client_id,
+            clientSecret: client_secret,
+            refreshToken: refresh_token
         }
     }
 };
@@ -31,7 +30,7 @@ function createDraft (string receipient, string msg) {
     //messageRequest.cc = testCc;
     messageRequest.messageBody = msg;
     messageRequest.contentType = "text/plain";
-    var draftResponse = gmailClient->createDraft(testUserId, messageRequest, threadId = sentTextMessageThreadId);
+    var draftResponse = gmailClient->createDraft(userId, messageRequest, threadId = sentTextMessageThreadId);
     if (draftResponse is string) {
         test:assertTrue(draftResponse != "null", msg = "Create Draft failed");
         createdDraftId = untaint draftResponse;
@@ -56,7 +55,7 @@ function sendMail(string receipient, string msg, string subject) {
     messageRequest.attachmentPaths = attachments;
     log:printInfo("testSendTextMessage");
     //----Send the mail----
-    var sendMessageResponse = gmailClient->sendMessage(testUserId, messageRequest);
+    var sendMessageResponse = gmailClient->sendMessage(userId, messageRequest);
     string messageId = "";
     string threadId = "";
     string sentTextMessageId="";
@@ -81,7 +80,6 @@ function testListLabels() {
         foreach int i in 0... 20{
             boolean isEqual = listLabelResponse[i].name.equalsIgnoreCase("vacation");
             if(isEqual==true) {
-                io:println(listLabelResponse[i].id);
                 testListMessages(listLabelResponse[i].id);
                 break;
             }
@@ -159,5 +157,4 @@ function addLeave(string mail_id, string sub_data){
 function sanitizeAndReturnUntaintedString(string input) returns @untainted string {
     return input;
 }
-
 

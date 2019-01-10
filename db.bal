@@ -3,18 +3,19 @@ import ballerina/mysql;
 
 
 mysql:Client DB = new({
-        host: "localhost",
-        port: 3306,
-        name: "users",
-        username: "root",
-        password: "password",
+        host: host,
+        port: port,
+        name: dbname,
+        username: user,
+        password: secretkey,
         poolOptions: { maximumPoolSize: 5 },
         dbOptions: { useSSL: false }
     });
 
 function createtable(){
-    var ret = DB->update("CREATE TABLE IF NOT EXISTS vacation(id int AUTO_INCREMENT, email_id varchar(255), leave_date varchar(20), PRIMARY KEY(id))");
-
+    var ret = DB->update("CREATE TABLE IF NOT EXISTS vacation (id int AUTO_INCREMENT, email_id varchar(255), leave_date varchar(20), PRIMARY KEY(id),
+    UNIQUE KEY email_id_date (email_id, leave_date))");
+    handleUpdate(ret, "CREATING NEW TABLE");
 }
 
 function dbinsertuser(string name, string email_id){

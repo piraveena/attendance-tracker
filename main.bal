@@ -10,17 +10,8 @@ import ballerina/mysql;
 
 public function main() {
 
-    //userInput();
-    //dbinsert();
-    //insertIntodb();
-    //createDraft();
-    //sendingsms("testx","94776099594");
-    //testListMessages() ;
-    //createtable();
-    //sendMail();
+    createtable();
     testListLabels();
-
-    //insert();
 }
 
 //getting user input for sending mail or creating draft by separately inputing all parameters
@@ -101,7 +92,5 @@ function sendMailToAll(){
 
 //Making the input as untained
 function sanitizeAndReturnUntainted(json input) returns @untainted json {
-
     return input;
 }
-
