@@ -18,7 +18,7 @@ gmail:GmailConfiguration gmailConfig = {
     }
 };
 
-string testUserId = "me";
+string userId = "me";
 string sentTextMessageThreadId = "";
 string createdDraftId = "";
 gmail:Client gmailClient = new(gmailConfig);
@@ -69,37 +69,32 @@ function sendMail(string receipient, string msg, string subject) {
         test:assertFail(msg = <string>sendMessageResponse.detail().message);
     }
 }
+
 //list all labels
 function testListLabels() {
     //log:printInfo("ListLabels");
-    var listLabelResponse = gmailClient->listLabels("me");
-    //io:println(listLabelResponse);
+    var listLabelResponse = gmailClient->listLabels(userId);
+    //io:println(listLabelResponse[0]);
     if (listLabelResponse is error) {
         test:assertFail(msg = <string>listLabelResponse.detail().message);
-    }else if(listLabelResponse is json){
-        var list_labels = json.convert(listLabelResponse);
-        io:println (list_labels);
-        //int x = list_labels.length() -1;
-        //json untained_mail= sanitizeAndReturnUntainted(allemail);
-        //foreach int i in 0... x{
-        //    var mail_id= string.convert(untained_mail[i].email_id);
-        //    if (mail_id is string){
-        //        io:println((mail_id));
-        //        sendMail(mail_id, "hi woowww", "hi");
-        //    }
-        //    else {
-        //        io:println("Error");
-        //    }
-        //
-        //}
+    }else {
+        foreach int i in 0... 20{
+            boolean isEqual = listLabelResponse[i].name.equalsIgnoreCase("vacation");
+            if(isEqual==true) {
+                io:println(listLabelResponse[i].id);
+                testListMessages(listLabelResponse[i].id);
+                break;
+            }
+        }
     }
 }
+
 //List All Messages with Label vacation without including Spam and Trash
-function testListMessages() {
+function testListMessages(string labelid) {
     //get the label id
     log:printInfo("testListAllMessages");
-    gmail:MsgSearchFilter searchFilter = { includeSpamTrash: false, labelIds: ["Label_6149798939847843286"] };
-    var msgList = gmailClient->listMessages("me", filter = searchFilter);
+    gmail:MsgSearchFilter searchFilter = { includeSpamTrash: false, labelIds: [labelid] };
+    var msgList = gmailClient->listMessages(userId, filter = searchFilter);
     //io:println(msgList);
     if msgList is error{
         test:assertFail(msg = <string>msgList.detail().message);
@@ -119,11 +114,8 @@ function testListMessages() {
             }else {
                 io:println("message id is not a string");
             }
-
             //testReadTextMessage(string.convert(mail_list[i].messageId));
-
         }
-
     }else {
         io:println ("error in getting mails");
     }
@@ -133,7 +125,7 @@ function testListMessages() {
 function testReadTextMessage(string messageid) {
     //Read mail with message id which was sent in testSendSimpleMessage
     //log:printInfo("testReadTextMessage");
-    var response = gmailClient->readMessage("me", messageid);
+    var response = gmailClient->readMessage(userId, messageid);
     //io:println(response.headerFrom);
     if (response is gmail:Message) {
         var subject = response.headerSubject;
@@ -154,17 +146,16 @@ function testReadTextMessage(string messageid) {
 
 //"Leave 09-01-2018" subject should be in this format
 function addLeave(string mail_id, string sub_data){
-
     var aar = sub_data.split(" ");
     io:println(aar);
     string id=mail_id.replace(">"," ").split("<")[1];
     io:println(id);
-    io:println("It has");
     io:println(sub_data);
     io:println(id);
     dbinsertleave(id, aar[1]);
 
 }
+
 function sanitizeAndReturnUntaintedString(string input) returns @untainted string {
     return input;
 }
