@@ -9,9 +9,9 @@ import ballerina/mysql;
 
 
 public function main() {
+   createtable();
+    userInput();
 
-    createtable();
-    testListLabels();
 }
 
 //getting user input for sending mail or creating draft by separately inputing all parameters
@@ -21,12 +21,13 @@ function userInput(){
     while (operation !=3){
         // print options menu to choose from
         io:println("Select operation.");
-        io:println("1. Create Draft");
-        io:println("2. Send Mail");
-        io:println("3. Exit");
+        io:println("1. Update vacations of employees");
+        io:println("2. Get vacation details");
+        io:println("3. Send mail to an employee");
+        io:println("4. Exit");
 
         // read user's choice
-        string val = io:readln("Enter choice 1 - 3: ");
+        string val = io:readln("Enter choice 1 - 4: ");
         var choice = int.convert(val);
         if (choice is int) {
             operation = choice;
@@ -35,26 +36,29 @@ function userInput(){
             continue;
         }
 
-        if (operation == 3) {
+        if (operation == 4) {
             break;
-        } else if (operation < 1 || operation > 5) {
+        } else if (operation < 1 || operation > 4) {
             io:println("Invalid choice \n");
             continue;
         }
         io:println(operation);
         if (operation == 1) {
-            io:println(" Creating Draft... ");
-            string receipient= io:readln("Enter receipient's email id: ");
-            string msg = io:readln("Enter the msg: ");
-            createDraft(receipient,msg);
+            io:println(" Updating vacation details... ");
+            testListLabels();
 
+        } else if(operation ==2){
+            string mail_id= io:readln("Enter receipient's email id: ");
+            var res = getvacationDetails("chaminda@wso2.com ");
+            io:println(res);
 
-        } else if (operation == 2) {
-            io:println("Sending Mail... ");
+        } else if (operation == 3) {
+
             string receipient= io:readln("Enter receipient's email id: ");
             string msg = io:readln("Enter the msg: ");
             string sub = io:readln("Enter the subject: ");
             sendMail(receipient,msg, sub);
+            io:println("Sending Mail... ");
 
         } else {
             io:println("Invalid choice");

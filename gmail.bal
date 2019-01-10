@@ -149,9 +149,26 @@ function addLeave(string mail_id, string sub_data){
     string id=mail_id.replace(">"," ").split("<")[1];
     io:println(id);
     io:println(sub_data);
-    io:println(id);
-    dbinsertleave(id, aar[1]);
+    io:println(id.replace(" ",""));
+    if(isDate(aar[1])==true){
+        dbinsertleave(id, aar[1]);
+    } else {
+        io:println("Error in date format");
+    }
 
+
+
+}
+//([0-9]{2}\-){2}[0-9]{4}
+
+function isDate(string input) returns boolean {
+    string regEx = "([0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9])";
+    boolean|error isInt = input.matches(regEx);
+    if (isInt is error) {
+        panic isInt;
+    } else {
+        return isInt;
+    }
 }
 
 function sanitizeAndReturnUntaintedString(string input) returns @untainted string {

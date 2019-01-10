@@ -46,7 +46,7 @@ function handleUpdate(int|error returned, string message) {
 }
 
 function getAllEmailId() returns json{
-    var selectRet = DB->select("SELECT email_id FROM users", ());
+    var selectRet = DB->select("SELECT email_id FROM user_details", ());
     if (selectRet is table<record {}>) {
         io:println("\nConvert the table into json");
         var jsonConversionRet = json.convert(selectRet);
@@ -58,6 +58,32 @@ function getAllEmailId() returns json{
     } else {
         io:println("Select data from student table failed: " + <string>selectRet.detail().message);
     }
+}
+
+function getvacationDetails(string mail_id) returns json{
+    //io:println("getting vacation details");
+    string que = "SELECT leave_date FROM vacation where email_id =";
+    //string ty = "SELECT email_id FROM user_details";
+    string getquery = que+"'" + mail_id +"'";
+    var selectRet = DB->select(getquery, ());
+    //if (selectRet is table<record {}>) {
+    //    io:println("\nConvert the table into json");
+    //    var jsonConversionRet = json.convert(selectRet);
+    //}
+    //var selectRet = DB->select("SELECT email_id FROM user_details", ());
+    if (selectRet is table<record {}>) {
+        io:println("\nConvert the table into json");
+        var jsonConversionRet = json.convert(selectRet);
+        if (jsonConversionRet is json) {
+            return jsonConversionRet;
+        } else {
+            io:println("Error in table to json conversion");
+        }
+    } else {
+        io:println("Select data from student table failed: " + <string>selectRet.detail().message);
+    }
+
+
 }
 
 function sanitizeAndReturnTainted(string input) returns string {
