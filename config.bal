@@ -27,3 +27,9 @@ string user = config:getAsString("USER_NAME");
 
 // Password of MySQL database
 string secretkey = config:getAsString("PASSWORD");
+
+// User name of twillo sms api
+string twillo_user = config:getAsString("TWILLO_USERNAME");
+
+// Password of twillo sms api
+string twillo_password = config:getAsString("TWILLO_PASSWORD");

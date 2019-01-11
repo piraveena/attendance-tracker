@@ -23,7 +23,7 @@ function userInput(){
         io:println("Select operation.");
         io:println("1. Update vacations of employees");
         io:println("2. Get vacation details");
-        io:println("3. Send mail to an employee");
+        io:println("3. Send mail to an employee and notifying via sms");
         io:println("4. Exit");
 
         // read user's choice
@@ -57,7 +57,10 @@ function userInput(){
             string receipient= io:readln("Enter receipient's email id: ");
             string msg = io:readln("Enter the msg: ");
             string sub = io:readln("Enter the subject: ");
+            string phone = io:readln("Enter the phone number (eg:9477xxxxxxx): ");
             sendMail(receipient,msg, sub);
+            string sms = "Please check your wso2 gmail account. We have sent a mail to you!";
+            sendingsms(sms, phone);
             io:println("Sending Mail... ");
 
         } else {

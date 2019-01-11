@@ -163,7 +163,9 @@ function addLeave(string mail_id, string sub_data){
 
 function isDate(string input) returns boolean {
     string regEx = "([0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9])";
+    //string regEx1 = "[0-9][0-9]|[0-9][0-9]|[0-9][0-9][0-9][0-9])";
     boolean|error isInt = input.matches(regEx);
+    //boolean |error isInt1 = input.matches(regEx1)
     if (isInt is error) {
         panic isInt;
     } else {
