@@ -8,6 +8,7 @@ If there is any inquiries or further details the HR person needs, then he can se
 2. Retrieving the details of vacation taken by the employees
 3. Sending mails to employees in case any need about the vacation taken and notifying through sms.
 
+![Attendance Tracker overview ](attendance-tracker/resources/overview_diagram.jpg)
 
 ## Compatibility
 
@@ -26,7 +27,7 @@ Download the ballerina [distribution](https://ballerinalang.org/downloads/).
    ```shell
      	https://github.com/piraveena/vacation_counter.git
    ```
-   
+ 
    * Initialize the ballerina project.
     
   ```shell
