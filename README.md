@@ -1,4 +1,4 @@
-# Employees Attendance Tracker  
+# Employee Attendance Tracker  
 The application can read the mails to vacation group and count the number of leaves taken by employees of wso2. The leave data will be stored in mysql database. When the HR person need details about the leaves taken by an employee, he can input the email_id and get the details about the employee’s leaves. 
 
 If there is any inquiries or further details the HR person needs, then he can send mail to the employee and can notify the employee via sms.
