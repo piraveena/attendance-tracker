@@ -21,13 +21,13 @@ Download the ballerina [distribution](https://ballerinalang.org/downloads/).
 
 ## Getting started
 
-1.  * Clone the repository by running the following command
+1.  
+  * Clone the repository by running the following command
 
          
    ```shell
-     	https://github.com/piraveena/vacation_counter.git
+     	https://github.com/piraveena/attendance-tracker.git
    ```
- 
    * Initialize the ballerina project.
     
   ```shell
